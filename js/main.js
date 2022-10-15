@@ -49,20 +49,6 @@ function getRandomList(array) {
     return [...new Set(result)];
 }
 
-function getAdv() {
-    // - создать массив
-    // - 10 раз создать объект с данными объявления и положить его в массив
-    // - вернуть массив
-
-    const arr = [];
-    for (let i = 0; i < 10; i++) {
-        const adv = createAdv();
-        arr.push(adv);
-    }
-
-    return arr;
-}
-
 function createAdv() {
     const location = {
         lat: getRandomNumberFixed(LOW_LAT, HI_LAT),
@@ -90,4 +76,6 @@ function createAdv() {
         location
     }
 }
+
+Array.from({length: SIMILAR_ADVERTISEMENTS}, createAdv);
 
