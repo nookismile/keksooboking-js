@@ -13,6 +13,13 @@ const getData = () => ({
         'bungalow': 'Бунгало',
         'hotel': 'Отель',
     },
+    MIN_PRICE: {
+        'bungalow': 0,
+        'flat': 1000,
+        'hotel': 3000,
+        'house': 5000,
+        'palace': 10000,
+    },
     LOW_ROOMS: 5,
     HI_ROOMS: 20,
     LOW_GUESTS: 1,
