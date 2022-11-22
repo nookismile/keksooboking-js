@@ -1,6 +1,6 @@
 import { getData } from './data.js';
 import { getElements } from './elements.js';
-import { generateCardElements } from './generate-card-elements.js';
+import { generateCardElement } from './generate-card-element.js';
 import { createAdvertisement } from './create-advertisement.js';
 import { addFormInactiveStay, addFormActiveStay } from './form-state.js';
 import { formValidate } from './validate-form.js';
@@ -16,7 +16,7 @@ if(!isMapLoaded) {
     addFormInactiveStay(adForm, mapFilters);
 } else {
     addFormActiveStay(adForm, mapFilters);
-    generateCardElements(advertisements);
+    // generateCardElement(advertisements);
     createMarkers(advertisements);
     formValidate(adForm);
 }

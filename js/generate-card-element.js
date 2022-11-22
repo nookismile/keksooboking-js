@@ -1,6 +1,6 @@
 import { getData } from "./data.js";
 
-const {TYPES} = getData();
+const { TYPES } = getData();
 
 const addTextContent = (parent, selector, text) => {
     parent.querySelector(selector).textContent = text;
@@ -39,13 +39,13 @@ const addAvatar = (cartElement, path) => {
 };
 
 
-const generateCardElements = (cards) => {
-  const fragment = document.createDocumentFragment();
+const generateCardElement = (card) => {
   const template = document.querySelector('#card').content.querySelector('.popup');
-  cards.forEach(({
-    author: {avatar},
-    offer: {title, address, price, type, rooms, guests, checkin, checkout, features, description, photos}
-  }) => {
+  const {
+      author: { avatar },
+      offer: { title, address, price, type, rooms, guests, checkin, checkout, features, description, photos }
+  } = card;
+  
     const cardElement = template.cloneNode(true);
     addTextContent(cardElement, '.popup__title', title);
     addTextContent(cardElement, '.popup__text--address', address);
@@ -58,12 +58,7 @@ const generateCardElements = (cards) => {
     addPhotos(cardElement, photos);
     addAvatar(cardElement, avatar);
 
-    fragment.append(cardElement);
-  });
+   return cardElement;
 };
 
-export { generateCardElements };
-
-
-
-
+export { generateCardElement };
