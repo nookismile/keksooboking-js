@@ -5,10 +5,12 @@ import { createAdvertisement } from './create-advertisement.js';
 import { addInactiveStay, addActiveStay } from './form.js';
 import { validateForm } from './validate-form.js';
 
-const {adForm, mapFilters} = getElements();
-const {SIMILAR_ADVERTISEMENTS} = getData();
+import './map.js'
 
-const advertisements = Array.from({length: SIMILAR_ADVERTISEMENTS}, createAdvertisement);
+const { adForm, mapFilters } = getElements();
+const { SIMILAR_ADVERTISEMENTS } = getData();
+
+const advertisements = Array.from({ length: SIMILAR_ADVERTISEMENTS }, createAdvertisement);
 
 addInactiveStay(adForm, mapFilters);
 generateCardElements(advertisements);

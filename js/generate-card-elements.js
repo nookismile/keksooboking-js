@@ -60,7 +60,6 @@ const generateCardElements = (cards) => {
 
     fragment.append(cardElement);
   });
-    document.querySelector('#map-canvas').append(fragment.children[0]);
 };
 
 export { generateCardElements };
