@@ -4,8 +4,8 @@ const getData = () => ({
     HI_LAT: 35.70000,
     LOW_LNG: 139.70000,
     HI_LNG: 139.80000,
-    LOW_PRICE: 10,
-    HI_PRICE: 1000,
+    LOW_PRICE: 0,
+    HIGH_PRICE: 100000,
     TYPES: {
         'palace': 'Дворец',
         'flat': 'Квартира',
