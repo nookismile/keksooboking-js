@@ -26,7 +26,7 @@ const getPriceErrorMessage = (price, type) => {
     }
 };
 
-const validateForm = (form) => {
+const formValidate = (form) => {
     const pristine = new Pristine(form, {
         classTo: 'ad-form__element',
         errorTextClass: 'ad-form__error-message',
@@ -76,7 +76,7 @@ const validateForm = (form) => {
     });
 };
 
-export { validateForm };
+export { formValidate };
 
 
 

@@ -36,7 +36,8 @@ const getData = () => ({
     TOKYO_CENTER: {
         lat: 35.6895,
         lng: 139.692,
-    }
+    },
+    DEFAULT_ZOOM: 11
 });
 
 export { getData };
