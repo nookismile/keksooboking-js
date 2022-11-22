@@ -1,11 +1,15 @@
-import { getData } from './data.js'
+import { getData } from './data.js';
+import { getElements } from './elements.js';
 
-const { TOKYO_CENTER,DEFAULT_ZOOM } = getData();
+const { TOKYO_CENTER,DEFAULT_ZOOM, DIGITS } = getData();
+const { adForm } = getElements();
 let isMapLoaded = false;
+const addressField = adForm.querySelector('#address');
 
 const map = L.map('map-canvas')
     .on('load', () => {
         isMapLoaded = true;
+        addressField.value = `${ TOKYO_CENTER.lat }, ${ TOKYO_CENTER.lng }`;
     })
     .setView(TOKYO_CENTER, DEFAULT_ZOOM);
 
@@ -18,8 +22,8 @@ L.tileLayer(
 
 const mainPinIcon = L.icon({
     iconUrl: './img/main-pin.svg',
-    iconSize: [30, 30],
-    iconAnchor: [15, 30],
+    iconSize: [52, 52],
+    iconAnchor: [26, 52],
 });
 
 const mainPinMarker = L.marker(
@@ -31,5 +35,10 @@ const mainPinMarker = L.marker(
 );
 
 mainPinMarker.addTo(map);
+
+mainPinMarker.on('moveend', (e) => {
+    const coordinates = e.target.getLatLng();
+    addressField.value = `${ (coordinates.lat).toFixed(DIGITS) }, ${ (coordinates.lng).toFixed(DIGITS) }`;
+});
 
 export { isMapLoaded };
