@@ -54,7 +54,7 @@ const createMarker = (point) => {
     const { location: { lat, lng } } = point;
     const marker = L.marker(
         { lat, lng },
-        { icon:simpleIcon }
+        { icon: simpleIcon }
     );
     
     marker
