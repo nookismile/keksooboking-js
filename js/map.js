@@ -1,18 +1,36 @@
 import { getData } from './data.js';
 import { getElements } from './elements.js';
 import { generateCardElement } from './generate-card-element.js';
+import { addFormActiveState } from './form-state.js';
 
-const { TOKYO_CENTER,DEFAULT_ZOOM, DIGITS } = getData();
-const { adForm } = getElements();
-let isMapLoaded = false;
+const { TOKYO_CENTER, DEFAULT_ZOOM, DIGITS, MAIN_MARKER_ICON, SIMPLE_MARKER_ICON } = getData();
+const { adForm, mapFilters } = getElements();
+
 const addressField = adForm.querySelector('#address');
 
-const map = L.map('map-canvas')
-    .on('load', () => {
-        isMapLoaded = true;
-        addressField.value = `${ TOKYO_CENTER.lat }, ${ TOKYO_CENTER.lng }`;
-    })
-    .setView(TOKYO_CENTER, DEFAULT_ZOOM);
+const createMainMarker = () => {
+    const mainMarker = L.marker(
+        TOKYO_CENTER,
+        {
+            draggable: true,
+            icon: L.icon(MAIN_MARKER_ICON),
+        }
+    );
+    
+    mainMarker.on('moveend', (e) => {
+        const coordinates = e.target.getLatLng();
+        addressField.value = `${ (coordinates.lat).toFixed(DIGITS) }, ${ (coordinates.lng).toFixed(DIGITS) }`;
+    });
+    return mainMarker;
+};
+
+const mapInit = () => {
+    const map = L.map('map-canvas')
+        .on('load', () => {
+            addressField.value = `${ TOKYO_CENTER.lat }, ${ TOKYO_CENTER.lng }`;
+            addFormActiveState(adForm, mapFilters);
+        })
+        .setView(TOKYO_CENTER, DEFAULT_ZOOM);
 
 L.tileLayer(
     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -21,51 +39,28 @@ L.tileLayer(
     },
 ).addTo(map);
 
-const mainPinIcon = L.icon({
-    iconUrl: './img/main-pin.svg',
-    iconSize: [52, 52],
-    iconAnchor: [26, 52],
-});
+    createMainMarker().addTo(map);
+    return map;
+};
 
-const mainPinMarker = L.marker(
-    TOKYO_CENTER,
-    {
-        draggable: true,
-        icon: mainPinIcon
-    }
-);
-
-mainPinMarker.addTo(map);
-
-mainPinMarker.on('moveend', (e) => {
-    const coordinates = e.target.getLatLng();
-    addressField.value = `${ (coordinates.lat).toFixed(DIGITS) }, ${ (coordinates.lng).toFixed(DIGITS) }`;
-});
-
-const similarAdvertisementsGroup = L.layerGroup().addTo(map);
-
-const simpleIcon = L.icon({
-    iconUrl: './img/pin.svg',
-    iconSize: [40, 40],
-    iconAnchor: [20, 40],
-});
-
-const createMarker = (point) => {
+const createMarker = (point, layer) => {
     const { location: { lat, lng } } = point;
     const marker = L.marker(
         { lat, lng },
-        { icon: simpleIcon }
+        { icon: L.icon(SIMPLE_MARKER_ICON) },
     );
     
     marker
-        .addTo(similarAdvertisementsGroup)
+        .addTo(layer)
         .bindPopup(generateCardElement(point));
 };
 
-const createMarkers = (advertisements) => {
+const createMarkers = (map, advertisements) => {
+    const layer = L.layerGroup().addTo(map);
+    
     advertisements.forEach((adPoint) => {
-        createMarker(adPoint);
+        createMarker(adPoint, layer);
     });
 };
 
-export { isMapLoaded, createMarkers };
+export { mapInit, createMarkers };

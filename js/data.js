@@ -37,7 +37,17 @@ const getData = () => ({
         lat: 35.6895,
         lng: 139.692,
     },
-    DEFAULT_ZOOM: 11
+    DEFAULT_ZOOM: 11,
+    MAIN_MARKER_ICON: {
+        iconUrl: './img/main-pin.svg',
+        iconSize: [52, 52],
+        iconAnchor: [26, 52]
+    },
+    SIMPLE_MARKER_ICON: {
+        iconUrl: './img/pin.svg',
+        iconSize: [40, 40],
+        iconAnchor: [20, 40]
+    }
 });
 
 export { getData };
