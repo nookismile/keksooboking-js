@@ -1,67 +1,29 @@
 import { getData } from './data.js';
-import { getElements } from './elements.js';
-import { generateCardElement } from './generate-card-element.js';
-import { addFormActiveState, addFormInactiveState } from './form-state.js';
+import { getElements, getFormFields } from './elements.js';
+import { setActiveState, setInactiveState } from './form-state.js';
+import { createMainMarker } from './markers.js';
 
-const { TOKYO_CENTER, DEFAULT_ZOOM, DIGITS, MAIN_MARKER_ICON, SIMPLE_MARKER_ICON } = getData();
+const { TOKYO_CENTER, DEFAULT_ZOOM } = getData();
 const { adForm, mapFilters } = getElements();
+const { addressField } = getFormFields();
 
-const addressField = adForm.querySelector('#address');
 
-const createMainMarker = () => {
-    const mainMarker = L.marker(
-        TOKYO_CENTER,
-        {
-            draggable: true,
-            icon: L.icon(MAIN_MARKER_ICON),
-        }
-    );
-    
-    mainMarker.on('moveend', (e) => {
-        const coordinates = e.target.getLatLng();
-        addressField.value = `${ (coordinates.lat).toFixed(DIGITS) }, ${ (coordinates.lng).toFixed(DIGITS) }`;
-    });
-    return mainMarker;
-};
+setInactiveState();
+const cityMap = L.map('map-canvas')
+    .on('load', () => {
+        addressField.value = `${ TOKYO_CENTER.lat }, ${ TOKYO_CENTER.lng }`;
+        setActiveState(adForm, mapFilters);
+    })
+    .setView(TOKYO_CENTER, DEFAULT_ZOOM);
 
-const createMarker = (point, layer) => {
-    const { location: { lat, lng } } = point;
-    const marker = L.marker(
-        { lat, lng },
-        { icon: L.icon(SIMPLE_MARKER_ICON) },
-    );
-    
-    marker
-        .addTo(layer)
-        .bindPopup(generateCardElement(point));
-};
+L.tileLayer(
+    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    },
+).addTo(cityMap);
 
-const createMarkers = (map, advertisements) => {
-    const layer = L.layerGroup().addTo(map);
-    
-    advertisements.forEach((adPoint) => {
-        createMarker(adPoint, layer);
-    });
-};
+const mainMarker = createMainMarker();
+mainMarker.addTo(cityMap);
 
-const initMap = () => {
-    addFormInactiveState();
-    const map = L.map('map-canvas')
-        .on('load', () => {
-            addressField.value = `${TOKYO_CENTER.lat}, ${TOKYO_CENTER.lng}`;
-            addFormActiveState(adForm, mapFilters);
-        })
-        .setView(TOKYO_CENTER, DEFAULT_ZOOM);
-    
-    L.tileLayer(
-        'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-        {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-        },
-    ).addTo(map);
-    
-    createMainMarker().addTo(map);
-    return map;
-};
-
-export { initMap, createMarkers };
+export { cityMap, mainMarker };

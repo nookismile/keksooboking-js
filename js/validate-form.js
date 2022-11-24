@@ -1,6 +1,6 @@
 import { getData } from './data.js';
 import { getElements } from './elements.js';
-import { sendAdvertisements } from './server-requests.js';
+import { sendAdvertisement } from './server-requests.js';
 
 const { adForm: form, priceSlider: slider } = getElements();
 const { MIN_PRICE } = getData();
@@ -81,7 +81,7 @@ const formValidate = () => {
         const isValid = pristine.validate();
         if (isValid) {
             const formData = new FormData(e.target);
-            sendAdvertisements(formData);
+            sendAdvertisement(formData);
         }
     });
 };
