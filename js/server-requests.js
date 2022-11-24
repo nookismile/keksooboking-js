@@ -1,6 +1,7 @@
 import { getData } from "./data.js";
 import { onGetRequestError, onPostRequestError, onPostRequestSuccess } from './messages.js';
 import { createMarkers } from './markers.js';
+import { clearFields } from './form-state.js';
 
 const { GET_DATA_SERVER, SIMILAR_ADVERTISEMENTS, POST_DATA_SERVER } = getData();
 
@@ -14,7 +15,7 @@ const renderAdvertisements = (map) => {
             }
         })
         .then((data) => createMarkers(map, data.slice(0, SIMILAR_ADVERTISEMENTS )))
-        .catch((err) => onGetRequestError('Ошибка в получении данных. Попробуйте ещё раз.'));
+        .catch(() => onGetRequestError('Ошибка в получении данных. Попробуйте ещё раз.'));
 };
 
 
@@ -23,11 +24,12 @@ const sendAdvertisement = (formData) => {
         .then((response) => {
             if (response.ok) {
                 onPostRequestSuccess();
+                clearFields();
             } else {
                 onPostRequestError();
             }
         })
-        .catch((err) => onPostRequestError());
+        .catch(() => onPostRequestError());
 };
 
 export { renderAdvertisements, sendAdvertisement };

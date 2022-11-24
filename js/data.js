@@ -1,6 +1,6 @@
 const getData = () => ({
     GET_DATA_SERVER: 'https://25.javascript.pages.academy/keksobooking/data',
-    POST_DATA_SERVER: 'https://25.javascript.pages.academy/keksobooking',
+    POST_DATA_SERVER: 'https://25.javascrpt.pages.academy/keksobooking',
     SIMILAR_ADVERTISEMENTS: 10,
     LOW_LAT: 35.65000,
     HI_LAT: 35.70000,
@@ -35,7 +35,7 @@ const getData = () => ({
         'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg',
         'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg'
     ],
-    TOKYO_CENTER: {
+    DEFAULT_CENTER: {
         lat: 35.6895,
         lng: 139.692,
     },
@@ -49,7 +49,8 @@ const getData = () => ({
         iconUrl: './img/pin.svg',
         iconSize: [40, 40],
         iconAnchor: [20, 40]
-    }
+    },
+    DEFAULT_AVATAR: './img/muffin-grey.svg',
 });
 
 export { getData };
