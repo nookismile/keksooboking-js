@@ -1,4 +1,5 @@
 const getData = () => ({
+    GET_DATA_SERVER: 'https://25.javascript.pages.academy/keksobooking/data',
     SIMILAR_ADVERTISEMENTS: 10,
     LOW_LAT: 35.65000,
     HI_LAT: 35.70000,

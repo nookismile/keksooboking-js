@@ -24,25 +24,6 @@ const createMainMarker = () => {
     return mainMarker;
 };
 
-const mapInit = () => {
-    const map = L.map('map-canvas')
-        .on('load', () => {
-            addressField.value = `${ TOKYO_CENTER.lat }, ${ TOKYO_CENTER.lng }`;
-            addFormActiveState(adForm, mapFilters);
-        })
-        .setView(TOKYO_CENTER, DEFAULT_ZOOM);
-
-L.tileLayer(
-    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-    {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    },
-).addTo(map);
-
-    createMainMarker().addTo(map);
-    return map;
-};
-
 const createMarker = (point, layer) => {
     const { location: { lat, lng } } = point;
     const marker = L.marker(
@@ -55,7 +36,23 @@ const createMarker = (point, layer) => {
         .bindPopup(generateCardElement(point));
 };
 
-const createMarkers = (map, advertisements) => {
+const map = L.map('map-canvas')
+    .on('load', () => {
+        addressField.value = `${ TOKYO_CENTER.lat }, ${ TOKYO_CENTER.lng }`;
+        addFormActiveState(adForm, mapFilters);
+    })
+    .setView(TOKYO_CENTER, DEFAULT_ZOOM);
+
+L.tileLayer(
+    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    },
+).addTo(map);
+
+createMainMarker().addTo(map);
+
+const createMarkers = (advertisements) => {
     const layer = L.layerGroup().addTo(map);
     
     advertisements.forEach((adPoint) => {
@@ -63,4 +60,4 @@ const createMarkers = (map, advertisements) => {
     });
 };
 
-export { mapInit, createMarkers };
+export { createMarkers };
