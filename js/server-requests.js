@@ -1,6 +1,7 @@
 import { getData } from "./data.js";
+import { onPostRequestError, onPostRequestSuccess } from './messages.js';
 
-const { GET_DATA_SERVER, SIMILAR_ADVERTISEMENTS } = getData();
+const { GET_DATA_SERVER, SIMILAR_ADVERTISEMENTS, POST_DATA_SERVER } = getData();
 
 const renderAdvertisements = (map, onSuccess, onError) => {
     fetch(GET_DATA_SERVER)
@@ -15,5 +16,17 @@ const renderAdvertisements = (map, onSuccess, onError) => {
         .catch((err) => onError('Ошибка в получении данных. Попробуйте ещё раз.'));
 };
 
-export { renderAdvertisements };
 
+const sendAdvertisements = (formData) => {
+    fetch(POST_DATA_SERVER, {method: 'POST', body: formData})
+        .then((response) => {
+            if (response.ok) {
+                onPostRequestSuccess();
+            } else {
+                onPostRequestError();
+            }
+        })
+        .catch((err) => onPostRequestError());
+};
+
+export { renderAdvertisements, sendAdvertisements };
