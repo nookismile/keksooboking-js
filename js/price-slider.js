@@ -8,11 +8,10 @@ const priceField = form.querySelector('#price');
 const typeField = form.querySelector('#type');
 
 
-const priceSliderInit = () => {
     noUiSlider.create(slider,  {
        range: {
            min: LOW_PRICE,
-           max: 100000,
+           max: HIGH_PRICE,
        },
        start: MIN_PRICE['flat'],
        step: 1,
@@ -41,6 +40,6 @@ typeField.addEventListener('change', (e) => {
         step: 1
     });
 });
-};
 
-export { priceSliderInit };
+
+

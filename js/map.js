@@ -1,7 +1,7 @@
 import { getData } from './data.js';
 import { getElements } from './elements.js';
 import { generateCardElement } from './generate-card-element.js';
-import { addFormActiveState } from './form-state.js';
+import { addFormActiveState, addFormInactiveState } from './form-state.js';
 
 const { TOKYO_CENTER, DEFAULT_ZOOM, DIGITS, MAIN_MARKER_ICON, SIMPLE_MARKER_ICON } = getData();
 const { adForm, mapFilters } = getElements();
@@ -36,23 +36,7 @@ const createMarker = (point, layer) => {
         .bindPopup(generateCardElement(point));
 };
 
-const map = L.map('map-canvas')
-    .on('load', () => {
-        addressField.value = `${ TOKYO_CENTER.lat }, ${ TOKYO_CENTER.lng }`;
-        addFormActiveState(adForm, mapFilters);
-    })
-    .setView(TOKYO_CENTER, DEFAULT_ZOOM);
-
-L.tileLayer(
-    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-    {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    },
-).addTo(map);
-
-createMainMarker().addTo(map);
-
-const createMarkers = (advertisements) => {
+const createMarkers = (map, advertisements) => {
     const layer = L.layerGroup().addTo(map);
     
     advertisements.forEach((adPoint) => {
@@ -60,4 +44,24 @@ const createMarkers = (advertisements) => {
     });
 };
 
-export { createMarkers };
+const initMap = () => {
+    addFormInactiveState();
+    const map = L.map('map-canvas')
+        .on('load', () => {
+            addressField.value = `${TOKYO_CENTER.lat}, ${TOKYO_CENTER.lng}`;
+            addFormActiveState(adForm, mapFilters);
+        })
+        .setView(TOKYO_CENTER, DEFAULT_ZOOM);
+    
+    L.tileLayer(
+        'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        },
+    ).addTo(map);
+    
+    createMainMarker().addTo(map);
+    return map;
+};
+
+export { initMap, createMarkers };
